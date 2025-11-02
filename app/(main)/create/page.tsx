@@ -87,7 +87,7 @@ export default function CreatePostPage() {
             })
 
             if (result.success) {
-                toast.success(result.message || 'Blog created successfully!')
+                toast.success(result.msg || 'Blog created successfully!')
 				setTitle('')
 				setDescription('')
                 setContent('')
@@ -96,7 +96,7 @@ export default function CreatePostPage() {
                     router.push('/dashboard')
                 }, 1000)
             } else {
-                toast.error(result.message)
+                toast.error(result.msg)
                 console.log('Blog creation errors:', result.errors)
             }
         } catch (err) {

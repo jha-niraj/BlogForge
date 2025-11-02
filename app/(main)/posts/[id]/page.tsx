@@ -11,7 +11,7 @@ import ReactMarkdown from 'react-markdown'
 import Link from 'next/link'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
-import { getBlogById } from '@/actions/posts.action'
+import { getPostById } from '@/actions/posts.action'
 
 interface BlogDetailPageProps {
 	params: Promise<{ id: string }>
@@ -19,9 +19,9 @@ interface BlogDetailPageProps {
 
 export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
 	const { id } = await params;
-	const { blog } = await getBlogById(id)
+	const { post } = await getPostById(id)
 
-	if (!blog) {
+	if (!post) {
 		notFound()
 	}
 
@@ -38,10 +38,10 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
 			<article className="space-y-8">
 				<div className="text-center space-y-4">
 					<h1 className="text-4xl font-bold leading-tight lg:text-5xl">
-						{blog.title}
+						{post.title}
 					</h1>
 					<p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-						{blog.description}
+						{post.description}
 					</p>
 				</div>
 				<div className="flex items-center justify-center space-x-6 text-sm text-muted-foreground border-y py-6">
@@ -49,26 +49,26 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
 						<User className="h-4 w-4" />
 						<div className="flex items-center space-x-2">
 							<Avatar className="h-6 w-6">
-								<AvatarImage src={blog.author.image || undefined} alt={blog.author.name} />
+								<AvatarImage src={post.author.image || undefined} alt={post.author.name} />
 								<AvatarFallback className="text-xs">
-									{blog.author.name.charAt(0).toUpperCase()}
+									{post.author.name.charAt(0).toUpperCase()}
 								</AvatarFallback>
 							</Avatar>
-							<span className="font-medium">{blog.author.name}</span>
+							<span className="font-medium">{post.author.name}</span>
 						</div>
 					</div>
 					<div className="flex items-center space-x-1">
 						<Calendar className="h-4 w-4" />
-						<time dateTime={blog.createdAt.toISOString()}>
-							{format(blog.createdAt, 'MMMM dd, yyyy')}
+						<time dateTime={post.createdAt.toISOString()}>
+							{format(post.createdAt, 'MMMM dd, yyyy')}
 						</time>
 					</div>
 				</div>
 				{
-					blog.tags.length > 0 && (
+					post.tags.length > 0 && (
 						<div className="flex flex-wrap justify-center gap-2">
 							{
-								blog.tags.map((tag, index) => (
+								post.tags.map((tag, index) => (
 									<Badge key={index} variant="secondary">
 										{tag}
 									</Badge>
@@ -146,7 +146,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
 									),
 								}}
 							>
-								{blog.content}
+								{post.content}
 							</ReactMarkdown>
 						</div>
 					</CardContent>
@@ -166,18 +166,18 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
 
 export async function generateMetadata({ params }: BlogDetailPageProps) {
 	const { id } = await params
-	const { blog } = await getBlogById(id)
+	const { post } = await getPostById(id)
 
-	if (!blog) {
+	if (!post) {
 		return {
-			title: 'Blog Not Found'
+			title: 'Post Not Found'
 		}
 	}
 
 	return {
-		title: blog.title,
-		description: blog.description,
-		authors: [{ name: blog.author.name }],
-		keywords: blog.tags.join(', ')
+		title: post.title,
+		description: post.description,
+		authors: [{ name: post.author.name }],
+		keywords: post.tags.join(', ')
 	}
 }

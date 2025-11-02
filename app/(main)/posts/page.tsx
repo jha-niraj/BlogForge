@@ -7,7 +7,7 @@ import { BlogCard } from '@/components/blog-card'
 import { Pagination } from '@/components/pagination'
 import { Card, CardContent } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
-import type { BlogListItem, PaginationData } from '@/types/posts'
+import type { PostListItem, PaginationData } from '@/types/posts'
 
 function BlogsListSkeleton() {
 	return (
@@ -37,7 +37,7 @@ function BlogsListSkeleton() {
 
 function BlogsPageContent() {
 	const searchParams = useSearchParams()
-	const [blogs, setBlogs] = useState<BlogListItem[]>([])
+	const [blogs, setBlogs] = useState<PostListItem[]>([])
 	const [pagination, setPagination] = useState<PaginationData>({
 		currentPage: 1,
 		totalPages: 0,
@@ -56,7 +56,7 @@ function BlogsPageContent() {
 			window.scrollTo({ top: 0, behavior: 'smooth' })
 
 			try {
-				const { blogs: fetchedBlogs, pagination: paginationData } = await getAllPosts(currentPage)
+				const { posts: fetchedBlogs, pagination: paginationData } = await getAllPosts(currentPage)
 				setBlogs(fetchedBlogs)
 				setPagination(paginationData)
 			} catch (error) {
