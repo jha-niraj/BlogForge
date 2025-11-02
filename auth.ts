@@ -1,12 +1,12 @@
+import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from "next-auth/providers/google";
+import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import { prisma } from "@/lib/prisma";
-import { PrismaAdapter } from "@auth/prisma-adapter"
-import NextAuth from "next-auth";
 import { Role } from '@prisma/client';
 import bcrypt from "bcryptjs";
 
-export const { auth, handlers, signIn, signOut } = NextAuth({
+export const authOptions: NextAuthOptions = {
 	adapter: PrismaAdapter(prisma),
 	providers: [
 		CredentialsProvider({
@@ -54,7 +54,6 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
 								image: freshUser.image,
 								role: freshUser.role,
 								roleExplicitlyChosen: freshUser.roleExplicitlyChosen,
-								onboardingCompleted: freshUser.onboardingCompleted,
 							};
 						} else {
 							throw new Error("Email verification not completed");
@@ -93,39 +92,18 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
 		}),
 	],
 	callbacks: {
-		async jwt({ token, user, trigger, session }) {
+		async jwt({ token, user }) {
 			if (user) {
-				token.id = user.id!;
+				token.id = user.id;
 				token.role = user.role;
 				token.roleExplicitlyChosen = user.roleExplicitlyChosen;
 			}
-
-			// Only fetch from database during session updates or when explicitly triggered
-			// This prevents Prisma from running in Edge Runtime during middleware execution
-			if (token && !token.roleExplicitlyChosen && (trigger === "update" || trigger === "signIn")) {
-				try {
-					// Check if we're in Edge Runtime by trying to access process
-					if (typeof process !== 'undefined' && process.env) {
-						const dbUser = await prisma.user.findUnique({
-							where: { id: token.id as string },
-							select: { roleExplicitlyChosen: true }
-						});
-						if (dbUser) {
-							token.roleExplicitlyChosen = dbUser.roleExplicitlyChosen;
-						}
-					}
-				} catch (error) {
-					// Silently fail if running in Edge Runtime (middleware)
-					console.log("JWT callback: Skipping database query in Edge Runtime");
-				}
-			}
-
 			return token;
 		},
 		async session({ session, token }) {
 			if (session.user) {
 				session.user.id = token.id as string;
-				session.user.role = token.role as Role
+				session.user.role = token.role as Role;
 				session.user.roleExplicitlyChosen = Boolean(token.roleExplicitlyChosen);
 			}
 			return session;
@@ -172,15 +150,6 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
 		strategy: "jwt",
 	},
 	secret: process.env.NEXTAUTH_SECRET,
-	cookies: {
-		csrfToken: {
-			name: "next-auth.csrf-token",
-			options: {
-				httpOnly: true,
-				sameSite: "lax",
-				path: "/",
-				secure: process.env.NODE_ENV === "production",
-			},
-		},
-	},
-})
+}
+
+export default NextAuth(authOptions);

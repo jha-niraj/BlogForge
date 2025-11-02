@@ -33,6 +33,7 @@ model User {
     resetTokenExpiry     DateTime?
 
     accounts              Account[]
+    blogs                 Post[]
 
     @@index([email])
 }
@@ -58,4 +59,20 @@ model Account {
 
     @@unique([provider, providerAccountId])
     @@map("accounts")
+}
+
+model Post {
+    id          String   @id @default(cuid())
+    title       String
+    description String
+    content     String   @db.Text
+    tags        String[]
+    authorId    String
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+
+    author      User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+    @@index([authorId])
+    @@index([createdAt])
 }

@@ -1,125 +1,264 @@
 "use client";
 
-import * as React from "react";
-import { Github, Shield, Zap, Code2, Star, ExternalLink } from "lucide-react";
+import React from "react";
+import { motion } from "framer-motion";
+import { Header } from "@/components/navbar";
+import { 
+  PenTool, 
+  BookOpen, 
+  Users, 
+  ArrowRight, 
+  Sparkles, 
+  Edit3, 
+  Zap,
+  Layers,
+  Shield,
+  Heart
+} from "lucide-react";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
-export default function App() {
-	const [isHovered, setIsHovered] = React.useState(false);
+export default function HomePage() {
+  return (
+    <>
+      <Header />
+      <main className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/40 relative overflow-hidden">
+        {/* Animated Background Elements */}
+        <div className="absolute inset-0">
+          <motion.div 
+            className="absolute top-20 left-10 w-72 h-72 bg-violet-200/20 rounded-full blur-3xl"
+            animate={{
+              x: [0, 100, 0],
+              y: [0, -50, 0],
+            }}
+            transition={{
+              duration: 20,
+              repeat: Infinity,
+              repeatType: "reverse"
+            }}
+          />
+          <motion.div 
+            className="absolute bottom-20 right-10 w-96 h-96 bg-blue-200/20 rounded-full blur-3xl"
+            animate={{
+              x: [0, -80, 0],
+              y: [0, 60, 0],
+            }}
+            transition={{
+              duration: 25,
+              repeat: Infinity,
+              repeatType: "reverse"
+            }}
+          />
+          <motion.div 
+            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-indigo-200/15 rounded-full blur-3xl"
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{
+              duration: 15,
+              repeat: Infinity,
+              repeatType: "reverse"
+            }}
+          />
+        </div>
 
-	return (
-		<main className="h-screen bg-gradient-to-br from-slate-50 via-teal-50/30 to-emerald-50/50 relative overflow-hidden">
-			<div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(20,184,166,0.05),transparent_50%)] pointer-events-none"></div>
-			<div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(16,185,129,0.05),transparent_50%)] pointer-events-none"></div>
-			<div className="relative h-full flex items-center justify-center p-4">
-				<div className="max-w-5xl w-full h-full max-h-[95vh] flex flex-col">
-					<div className="bg-white/90 backdrop-blur-sm border border-gray-200/50 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden flex-1 flex flex-col">
-						<div className="bg-gradient-to-r from-teal-500 to-emerald-500 px-8 py-10 text-center relative overflow-hidden">
-							<div className="absolute inset-0 bg-gradient-to-r from-teal-600/20 to-emerald-600/20"></div>
-							<div className="relative z-10">
-								<div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 backdrop-blur-sm rounded-xl mb-4 shadow-lg">
-									<Shield className="w-8 h-8 text-white" />
-								</div>
-								<h1 className="text-4xl font-bold text-white mb-3 tracking-tight">
-									Next Auth Kit
-								</h1>
-								<p className="text-lg text-teal-50 font-medium">by Niraj Jha</p>
-							</div>
-						</div>
-						<div className="px-8 py-8 flex-1 flex flex-col">
-							<div className="text-center mb-8">
-								<h2 className="text-xl font-semibold text-gray-800 mb-3">
-									Streamlined Authentication for Modern Developers
-								</h2>
-								<p className="text-gray-600 max-w-3xl mx-auto leading-relaxed">
-									A clean, reliable starting point that eliminates the complexity of integrating Next Auth with Prisma,
-									designed for developers who value simplicity and reliability.
-								</p>
-							</div>
-							<div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8 flex-1">
-								<div className="group bg-gradient-to-br from-teal-50 to-emerald-50 rounded-xl p-5 border border-teal-100/50 hover:border-teal-200 hover:shadow-md transition-all duration-300">
-									<div className="text-center">
-										<div className="w-10 h-10 bg-teal-500 rounded-lg flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow mx-auto mb-3">
-											<Zap className="w-5 h-5 text-white" />
-										</div>
-										<h3 className="text-gray-800 font-semibold text-sm mb-2">Fast Integration</h3>
-										<p className="text-gray-600 text-xs leading-relaxed">
-											Streamlined setup process for rapid development.
-										</p>
-									</div>
-								</div>
-								<div className="group bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl p-5 border border-emerald-100/50 hover:border-emerald-200 hover:shadow-md transition-all duration-300">
-									<div className="text-center">
-										<div className="w-10 h-10 bg-emerald-500 rounded-lg flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow mx-auto mb-3">
-											<Code2 className="w-5 h-5 text-white" />
-										</div>
-										<h3 className="text-gray-800 font-semibold text-sm mb-2">Dependency Free</h3>
-										<p className="text-gray-600 text-xs leading-relaxed">
-											Eliminates common integration headaches.
-										</p>
-									</div>
-								</div>
-								<div className="group bg-gradient-to-br from-teal-50 to-emerald-50 rounded-xl p-5 border border-teal-100/50 hover:border-teal-200 hover:shadow-md transition-all duration-300">
-									<div className="text-center">
-										<div className="w-10 h-10 bg-teal-600 rounded-lg flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow mx-auto mb-3">
-											<Shield className="w-5 h-5 text-white" />
-										</div>
-										<h3 className="text-gray-800 font-semibold text-sm mb-2">Prisma Ready</h3>
-										<p className="text-gray-600 text-xs leading-relaxed">
-											Seamless database integration included.
-										</p>
-									</div>
-								</div>
-								<div className="group bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl p-5 border border-emerald-100/50 hover:border-emerald-200 hover:shadow-md transition-all duration-300">
-									<div className="text-center">
-										<div className="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow mx-auto mb-3">
-											<Star className="w-5 h-5 text-white" />
-										</div>
-										<h3 className="text-gray-800 font-semibold text-sm mb-2">Production Ready</h3>
-										<p className="text-gray-600 text-xs leading-relaxed">
-											Battle-tested and reliable foundation.
-										</p>
-									</div>
-								</div>
-							</div>
-							<div className="text-center">
-								<Link
-									href="https://github.com/jha-niraj/NextJS-starter-auth"
-									target="_blank"
-									rel="noopener noreferrer"
-									className="group inline-flex items-center gap-3 bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-600 hover:to-emerald-600 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg shadow-md"
-									onMouseEnter={() => setIsHovered(true)}
-									onMouseLeave={() => setIsHovered(false)}
-								>
-									<Github className={`w-5 h-5 transition-transform duration-300 ${isHovered ? 'rotate-12' : ''}`} />
-									<span>Star on GitHub</span>
-									<ExternalLink className="w-4 h-4 opacity-80" />
-								</Link>
-								<div className="flex items-center justify-center gap-2 text-gray-500 mt-4">
-									<Star className="w-4 h-4 text-amber-400 fill-current" />
-									<span className="text-sm font-medium">Help other developers discover this toolkit</span>
-								</div>
-							</div>
-						</div>
-						<div className="bg-gray-50/80 px-8 py-4 border-t border-gray-200/50">
-							<div className="flex items-center justify-center gap-6 text-gray-500 text-sm font-medium">
-								<div className="flex items-center gap-2">
-									<div className="w-2 h-2 bg-teal-500 rounded-full"></div>
-									<span>Open Source</span>
-								</div>
-								<div className="flex items-center gap-2">
-									<div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-									<span>TypeScript</span>
-								</div>
-								<div className="flex items-center gap-2">
-									<div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
-									<span>Next.js 14+</span>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</main>
-	);
+        {/* Hero Section */}
+        <section className="relative pt-32 pb-20 px-4">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-16">
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+                className="inline-flex items-center gap-2 bg-white/60 backdrop-blur-sm border border-gray-200/50 rounded-full px-6 py-2 mb-8 shadow-lg"
+              >
+                <Sparkles className="w-4 h-4 text-indigo-600" />
+                <span className="text-sm font-medium text-gray-700">Welcome to the future of blogging</span>
+                <Badge variant="secondary" className="bg-indigo-100 text-indigo-700 border-indigo-200">
+                  Beta
+                </Badge>
+              </motion.div>
+              
+              <motion.h1
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-gray-900 via-indigo-800 to-violet-800 bg-clip-text text-transparent leading-tight mb-6"
+              >
+                Write. Share.
+                <br />
+                <span className="bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">
+                  Inspire.
+                </span>
+              </motion.h1>
+              
+              <motion.p
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+                className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-12 leading-relaxed"
+              >
+                Join thousands of writers sharing their stories on our modern blogging platform. 
+                Beautiful design meets powerful functionality.
+              </motion.p>
+              
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.6 }}
+                className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+              >
+                <Link href="/blogs">
+                  <Button 
+                    size="lg"
+                    className="bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white px-8 py-4 h-14 text-lg font-semibold rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
+                  >
+                    <BookOpen className="w-6 h-6 mr-2" />
+                    Explore Stories
+                    <ArrowRight className="w-5 h-5 ml-2" />
+                  </Button>
+                </Link>
+                <Link href="/signin">
+                  <Button 
+                    variant="outline"
+                    size="lg"
+                    className="border-2 border-gray-300 text-gray-700 hover:bg-gray-50 px-8 py-4 h-14 text-lg font-semibold rounded-2xl transition-all duration-300 hover:border-indigo-300 hover:text-indigo-700"
+                  >
+                    <PenTool className="w-6 h-6 mr-2" />
+                    Start Writing
+                  </Button>
+                </Link>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        {/* Features Section */}
+        <section className="relative py-20 px-4">
+          <div className="max-w-7xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                Everything you need to 
+                <span className="bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">
+                  blog beautifully
+                </span>
+              </h2>
+              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+                Powerful features designed to make your writing experience seamless and enjoyable.
+              </p>
+            </motion.div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[
+                {
+                  icon: <Edit3 className="w-8 h-8" />,
+                  title: "Rich Markdown Editor",
+                  description: "Write with our intuitive editor featuring live preview, syntax highlighting, and all the markdown features you love.",
+                  gradient: "from-violet-500 to-purple-600",
+                  delay: 0
+                },
+                {
+                  icon: <Layers className="w-8 h-8" />,
+                  title: "Beautiful Themes",
+                  description: "Choose from stunning, responsive themes that make your content shine across all devices.",
+                  gradient: "from-blue-500 to-indigo-600",
+                  delay: 0.2
+                },
+                {
+                  icon: <Zap className="w-8 h-8" />,
+                  title: "Lightning Fast",
+                  description: "Built on Next.js 14 with server components for optimal performance and SEO.",
+                  gradient: "from-amber-500 to-orange-600",
+                  delay: 0.4
+                },
+                {
+                  icon: <Users className="w-8 h-8" />,
+                  title: "Community Driven",
+                  description: "Connect with fellow writers, get feedback, and grow your audience organically.",
+                  gradient: "from-emerald-500 to-teal-600",
+                  delay: 0
+                },
+                {
+                  icon: <Shield className="w-8 h-8" />,
+                  title: "Secure & Private",
+                  description: "Your data is protected with industry-standard security and privacy controls.",
+                  gradient: "from-red-500 to-pink-600",
+                  delay: 0.2
+                },
+                {
+                  icon: <Heart className="w-8 h-8" />,
+                  title: "Made with Love",
+                  description: "Crafted by writers, for writers. Every feature is designed with your needs in mind.",
+                  gradient: "from-rose-500 to-pink-600",
+                  delay: 0.4
+                }
+              ].map((feature, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: feature.delay }}
+                  viewport={{ once: true }}
+                  className="group relative"
+                >
+                  <div className="bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 h-full">
+                    <div className={`inline-flex p-3 rounded-2xl bg-gradient-to-r ${feature.gradient} text-white mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                      {feature.icon}
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-4">
+                      {feature.title}
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      {feature.description}
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section className="relative py-20 px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="bg-white/90 backdrop-blur-sm border border-gray-200/50 rounded-3xl p-12 shadow-2xl"
+            >
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                Ready to start your 
+                <span className="bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">
+                  blogging journey?
+                </span>
+              </h2>
+              <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+                Join thousands of writers who have already discovered the joy of sharing their stories with the world.
+              </p>
+              <Link href="/signin">
+                <Button 
+                  size="lg"
+                  className="bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white px-12 py-6 h-16 text-xl font-semibold rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
+                >
+                  <PenTool className="w-6 h-6 mr-3" />
+                  Start Writing Today
+                  <ArrowRight className="w-6 h-6 ml-3" />
+                </Button>
+              </Link>
+            </motion.div>
+          </div>
+        </section>
+      </main>
+    </>
+  );
 }

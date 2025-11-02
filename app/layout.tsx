@@ -21,8 +21,16 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
-	title: "Next Starter Kit",
-	description: "All medicine info at one place",
+	title: "BlogForge - Forge Your Stories, Shape The Future",
+	description: "A modern, collaborative blogging platform where developers write, share, and discover technical content while learning modern web development.",
+	keywords: ["blog", "nextjs", "markdown", "developer", "open-source", "learning platform"],
+	authors: [{ name: "Niraj Jha" }],
+	creator: "Niraj Jha",
+	openGraph: {
+		title: "BlogForge - Forge Your Stories",
+		description: "Write, share, and discover technical blogs while learning modern web development",
+		type: "website",
+	},
 };
 
 export default function RootLayout({
@@ -34,7 +42,7 @@ export default function RootLayout({
 		<html lang="en">
 			<head>
 				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-				<link rel="icon" href="/mainlogo.ico" />
+				<link rel="icon" href="/vercel.svg" />
 			</head>
 			<body
                 className={`${geistSans.variable} ${spaceGrotesk.className} ${geistMono.variable} antialiased`}

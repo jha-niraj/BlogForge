@@ -2,6 +2,75 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  /* Custom prose styles for markdown content */
+  .prose {
+    color: hsl(var(--foreground));
+  }
+  
+  .prose :where(h1, h2, h3, h4, h5, h6):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+    color: hsl(var(--foreground));
+    font-weight: 600;
+  }
+  
+  .prose :where(strong):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+    color: hsl(var(--foreground));
+    font-weight: 600;
+  }
+  
+  .prose :where(code):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+    color: hsl(var(--foreground));
+    background-color: hsl(var(--muted));
+    padding: 0.125rem 0.25rem;
+    border-radius: 0.25rem;
+    font-size: 0.875em;
+    font-weight: 500;
+  }
+  
+  .prose :where(pre):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+    background-color: hsl(var(--muted));
+    border: 1px solid hsl(var(--border));
+    border-radius: 0.5rem;
+  }
+  
+  .prose :where(blockquote):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+    border-left-color: hsl(var(--primary));
+    color: hsl(var(--muted-foreground));
+  }
+  
+  .prose :where(a):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+    color: hsl(var(--primary));
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  
+  .prose :where(a:hover):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+    text-decoration: none;
+  }
+
+  /* Line clamp utilities */
+  .line-clamp-1 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+  }
+  
+  .line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+  
+  .line-clamp-3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+}
+
 body {
   font-family: Arial, Helvetica, sans-serif;
 }
