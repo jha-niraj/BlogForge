@@ -17,7 +17,7 @@ export function Pagination({
 	totalPages,
 	hasNextPage,
 	hasPreviousPage,
-	basePath = '/blogs'
+	basePath = '/posts'
 }: PaginationProps) {
 	const router = useRouter()
 	const searchParams = useSearchParams()

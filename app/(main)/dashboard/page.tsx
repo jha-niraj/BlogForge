@@ -1,7 +1,7 @@
 import { getSession } from '@/lib/auth'
 import { redirect } from 'next/navigation'
 import { UserBlogsList } from './components/user-blogs-list'
-import { getUserBlogs } from '@/actions/blogs.action'
+import { getUserBlogs } from '@/actions/posts.action'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { PenSquare, BookOpen, Eye, TrendingUp, Plus } from 'lucide-react'

@@ -45,7 +45,7 @@ export function UserBlogsList({ blogs }: UserBlogsListProps) {
 	return (
 		<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
 			{blogs.map((blog) => (
-				<Link key={blog.id} href={`/blogs/${blog.id}`}>
+				<Link key={blog.id} href={`/posts/${blog.id}`}>
 					<Card className="h-full transition-all hover:shadow-lg hover:scale-[1.02] cursor-pointer border-2 hover:border-primary/50">
 						<CardContent className="p-5">
 							<div className="space-y-3">

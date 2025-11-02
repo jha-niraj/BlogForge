@@ -11,7 +11,7 @@ import ReactMarkdown from 'react-markdown'
 import Link from 'next/link'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
-import { getBlogById } from "@/actions/blogs.action"
+import { getBlogById } from '@/actions/posts.action'
 
 interface BlogDetailPageProps {
 	params: Promise<{ id: string }>
@@ -28,7 +28,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
 	return (
 		<div className="container mx-auto px-4 py-8 max-w-4xl">
 			<div className="mb-6">
-				<Link href="/blogs">
+				<Link href="/posts">
 					<Button variant="ghost" className="mb-4 -ml-4">
 						<ArrowLeft className="mr-2 h-4 w-4" />
 						Back to Blogs
@@ -82,19 +82,19 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
 						<div className="prose prose-lg max-w-none dark:prose-invert prose-headings:font-semibold prose-p:text-muted-foreground prose-pre:bg-muted prose-pre:border">
 							<ReactMarkdown
 								components={{
-									code({ inline, className, children, ...props }) {
+									code({ className, children }) {
 										const match = /language-(\w+)/.exec(className || '')
-										return !inline && match ? (
+										const isInline = !match
+										return !isInline ? (
 											<SyntaxHighlighter
-												style={oneDark}
+												style={oneDark as Record<string, React.CSSProperties>}
 												language={match[1]}
 												PreTag="div"
-												{...props}
 											>
 												{String(children).replace(/\n$/, '')}
 											</SyntaxHighlighter>
 										) : (
-											<code className={className} {...props}>
+											<code className={className}>
 												{children}
 											</code>
 										)
@@ -152,7 +152,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
 					</CardContent>
 				</Card>
 				<div className="text-center pt-8 border-t">
-					<Link href="/blogs">
+					<Link href="/posts">
 						<Button variant="outline">
 							<ArrowLeft className="mr-2 h-4 w-4" />
 							Back to All Posts

@@ -1,33 +1,13 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { getAllBlogs } from './actions'
+import { getAllPosts } from '@/actions/posts.action'
 import { BlogCard } from '@/components/blog-card'
 import { Pagination } from '@/components/pagination'
 import { Card, CardContent } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
-
-interface Blog {
-	id: string
-	title: string
-	description: string
-	tags: string[]
-	createdAt: Date
-	author: {
-		id: string
-		name: string | null
-		image: string | null
-	}
-}
-
-interface PaginationData {
-	currentPage: number
-	totalPages: number
-	totalItems: number
-	hasNextPage: boolean
-	hasPreviousPage: boolean
-}
+import type { BlogListItem, PaginationData } from '@/types/posts'
 
 function BlogsListSkeleton() {
 	return (
@@ -55,9 +35,9 @@ function BlogsListSkeleton() {
 	)
 }
 
-export default function BlogsPage() {
+function BlogsPageContent() {
 	const searchParams = useSearchParams()
-	const [blogs, setBlogs] = useState<Blog[]>([])
+	const [blogs, setBlogs] = useState<BlogListItem[]>([])
 	const [pagination, setPagination] = useState<PaginationData>({
 		currentPage: 1,
 		totalPages: 0,
@@ -74,9 +54,9 @@ export default function BlogsPage() {
 			setIsLoading(true)
 			// Scroll to top when page changes
 			window.scrollTo({ top: 0, behavior: 'smooth' })
-			
+
 			try {
-				const { blogs: fetchedBlogs, pagination: paginationData } = await getAllBlogs(currentPage)
+				const { blogs: fetchedBlogs, pagination: paginationData } = await getAllPosts(currentPage)
 				setBlogs(fetchedBlogs)
 				setPagination(paginationData)
 			} catch (error) {
@@ -115,7 +95,6 @@ export default function BlogsPage() {
 							blogs.map((blog) => (
 								<BlogCard
 									key={blog.id}
-									id={blog.id}
 									title={blog.title}
 									description={blog.description}
 									tags={blog.tags}
@@ -124,7 +103,7 @@ export default function BlogsPage() {
 										image: blog.author.image || undefined
 									}}
 									createdAt={blog.createdAt}
-									href={`/blogs/${blog.id}`}
+									href={`/posts/${blog.id}`}
 								/>
 							))
 						}
@@ -139,5 +118,13 @@ export default function BlogsPage() {
 				</div>
 			)}
 		</div>
+	)
+}
+
+export default function BlogsPage() {
+	return (
+		<Suspense fallback={<BlogsListSkeleton />}>
+			<BlogsPageContent />
+		</Suspense>
 	)
 }

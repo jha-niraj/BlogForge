@@ -110,7 +110,7 @@ export default function HomePage() {
                 transition={{ duration: 0.8, delay: 0.6 }}
                 className="flex flex-col sm:flex-row gap-4 justify-center items-center"
               >
-                <Link href="/blogs">
+                <Link href="/posts">
                   <Button 
                     size="lg"
                     className="bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white px-8 py-4 h-14 text-lg font-semibold rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105"

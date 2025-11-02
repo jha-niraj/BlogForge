@@ -67,7 +67,7 @@ const Sidebar = () => {
 
 	const isActiveRoute = (path: string) => {
 		if (path === 'blogs') {
-			return pathname === '/blogs' || pathname === '/'
+			return pathname === '/posts' || pathname === '/'
 		}
 		return pathname.includes(path)
 	}

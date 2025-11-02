@@ -133,7 +133,7 @@ function VerifyContent() {
 
                 if (signInResult?.ok) {
                     setTimeout(() => {
-                        router.push('/blogs')
+                        router.push('/posts')
                     }, 2000)
                 } else {
                     setTimeout(() => {

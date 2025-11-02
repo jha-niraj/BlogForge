@@ -1,5 +1,4 @@
 // Blog/Post Types
-
 export interface Author {
 	id: string
 	name: string
