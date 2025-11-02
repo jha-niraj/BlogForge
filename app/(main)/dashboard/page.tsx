@@ -1,10 +1,14 @@
 import { getSession } from '@/lib/auth'
 import { redirect } from 'next/navigation'
-import { UserBlogsList } from './components/user-blogs-list'
-import { getUserBlogs } from '@/actions/posts.action'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { UserPostsList } from './components/userpostslist'
+import { getUserPosts } from '@/actions/posts.action'
+import { 
+	Card, CardContent, CardHeader, CardTitle 
+} from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { PenSquare, BookOpen, Eye, TrendingUp, Plus } from 'lucide-react'
+import { 
+	PenSquare, BookOpen, Eye, TrendingUp, Plus 
+} from 'lucide-react'
 import Link from 'next/link'
 
 export default async function DashboardPage() {
@@ -14,27 +18,24 @@ export default async function DashboardPage() {
 		redirect('/signin')
 	}
 
-	const { blogs } = await getUserBlogs()
+	const { posts } = await getUserPosts()
 
 	// Calculate stats
-	const totalBlogs = blogs.length
-	const totalTags = new Set(blogs.flatMap(blog => blog.tags)).size
-	const recentBlogs = blogs.filter(blog => {
-		const daysSinceCreation = Math.floor((Date.now() - new Date(blog.createdAt).getTime()) / (1000 * 60 * 60 * 24))
+	const totalBlogs = posts.length
+	const totalTags = new Set(posts.flatMap(post => post.tags)).size
+	const recentBlogs = posts.filter(post => {
+		const daysSinceCreation = Math.floor((Date.now() - new Date(post.createdAt).getTime()) / (1000 * 60 * 60 * 24))
 		return daysSinceCreation <= 7
 	}).length
 
 	return (
 		<div className="container mx-auto px-4 py-8 max-w-7xl">
-			{/* Welcome Section */}
 			<div className="mb-8">
 				<h1 className="text-4xl font-bold mb-2">Welcome back, {session.user.name}! 👋</h1>
 				<p className="text-muted-foreground text-lg">
 					Here&apos;s an overview of your blogging activity
 				</p>
 			</div>
-
-			{/* Stats Cards */}
 			<div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-8">
 				<Card className="border-l-4 border-l-primary">
 					<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -48,7 +49,6 @@ export default async function DashboardPage() {
 						</p>
 					</CardContent>
 				</Card>
-
 				<Card className="border-l-4 border-l-green-500">
 					<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
 						<CardTitle className="text-sm font-medium">Recent Posts</CardTitle>
@@ -61,7 +61,6 @@ export default async function DashboardPage() {
 						</p>
 					</CardContent>
 				</Card>
-
 				<Card className="border-l-4 border-l-purple-500">
 					<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
 						<CardTitle className="text-sm font-medium">Unique Tags</CardTitle>
@@ -74,7 +73,6 @@ export default async function DashboardPage() {
 						</p>
 					</CardContent>
 				</Card>
-
 				<Card className="border-l-4 border-l-orange-500 bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-950/20 dark:to-orange-900/20">
 					<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
 						<CardTitle className="text-sm font-medium">Create New</CardTitle>
@@ -90,29 +88,30 @@ export default async function DashboardPage() {
 					</CardContent>
 				</Card>
 			</div>
-
-			{/* User Blogs Section */}
 			<div className="space-y-6">
 				<div className="flex items-center justify-between">
 					<div>
 						<h2 className="text-2xl font-semibold">Your Blog Posts</h2>
 						<p className="text-muted-foreground">
-							{totalBlogs === 0 
-								? "You haven't created any blog posts yet" 
-								: `Manage and view your ${totalBlogs} blog ${totalBlogs === 1 ? 'post' : 'posts'}`
+							{
+								totalBlogs === 0
+									? "You haven't created any blog posts yet"
+									: `Manage and view your ${totalBlogs} blog ${totalBlogs === 1 ? 'post' : 'posts'}`
 							}
 						</p>
 					</div>
-					{totalBlogs > 0 && (
-						<Link href="/create">
-							<Button>
-								<PenSquare className="mr-2 h-4 w-4" />
-								Create New Blog
-							</Button>
-						</Link>
-					)}
+					{
+						totalBlogs > 0 && (
+							<Link href="/create">
+								<Button>
+									<PenSquare className="mr-2 h-4 w-4" />
+									Create New Blog
+								</Button>
+							</Link>
+						)
+					}
 				</div>
-				<UserBlogsList blogs={blogs} />
+				<UserPostsList posts={posts} />
 			</div>
 		</div>
 	)

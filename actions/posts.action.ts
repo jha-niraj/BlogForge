@@ -4,9 +4,11 @@ import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
-import type { Blog } from '@/types/posts'
+import type { Post } from '@/types/posts'
+import { getRedisClient } from '@/lib/redisclient'
+import { matchesGlob } from 'path'
 
-const createBlogSchema = z.object({
+const createpostSchema = z.object({
 	title: z.string().min(1, 'Title is required').max(200, 'Title must be less than 200 characters'),
 	description: z.string().min(1, 'Description is required').max(500, 'Description must be less than 500 characters'),
 	content: z.string().min(1, 'Content is required'),
@@ -21,9 +23,10 @@ export async function createPost(data: { title: string; description: string; con
 	}
 
 	try {
-		const validatedData = createBlogSchema.parse(data)
+		const validatedData = createpostSchema.parse(data);
+		const redis = await getRedisClient();
 
-		await prisma.post.create({
+		const post = await prisma.post.create({
 			data: {
 				title: validatedData.title,
 				description: validatedData.description,
@@ -33,20 +36,40 @@ export async function createPost(data: { title: string; description: string; con
 			}
 		})
 
-		return { success: true, message: 'Blog created successfully!' }
+		if (!post) {
+			return {
+				success: false,
+				msg: "Post creation failed!!!"
+			}
+		}
+
+		const cacheKey = `post:${post.id}`;
+		await redis.set(
+			cacheKey,
+			JSON.stringify(post),
+			{
+				EX: 3600
+			}
+		)
+
+		return {
+			success: true,
+			msg: 'post created successfully!',
+			post
+		}
 	} catch (error) {
 		if (error instanceof z.ZodError) {
 			return {
 				success: false,
-				message: 'Validation error',
+				msg: 'Validation error',
 				errors: error
 			}
 		}
 
-		console.error('Error creating blog:', error)
+		console.error('Error creating post:', error)
 		return {
 			success: false,
-			message: 'Failed to create blog. Please try again.'
+			msg: 'Failed to create post. Please try again.'
 		}
 	}
 }
@@ -55,7 +78,7 @@ export async function getAllPosts(page: number = 1, pageSize: number = 9) {
 	try {
 		const skip = (page - 1) * pageSize
 
-		const [blogs, totalCount] = await Promise.all([
+		const [posts, totalCount] = await Promise.all([
 			prisma.post.findMany({
 				skip,
 				take: pageSize,
@@ -78,7 +101,7 @@ export async function getAllPosts(page: number = 1, pageSize: number = 9) {
 		const totalPages = Math.ceil(totalCount / pageSize)
 
 		return {
-			blogs,
+			posts,
 			pagination: {
 				currentPage: page,
 				totalPages,
@@ -88,9 +111,9 @@ export async function getAllPosts(page: number = 1, pageSize: number = 9) {
 			}
 		}
 	} catch (error) {
-		console.error('Error fetching blogs:', error)
+		console.error('Error fetching posts:', error)
 		return {
-			blogs: [],
+			posts: [],
 			pagination: {
 				currentPage: 1,
 				totalPages: 0,
@@ -106,11 +129,11 @@ export async function getUserPosts() {
 	const session = await getSession()
 
 	if (!session?.user?.id) {
-		return { blogs: [] }
+		return { posts: [] }
 	}
 
 	try {
-		const blogs = await prisma.post.findMany({
+		const posts = await prisma.post.findMany({
 			where: {
 				authorId: session.user.id
 			},
@@ -123,20 +146,44 @@ export async function getUserPosts() {
 				description: true,
 				createdAt: true,
 				updatedAt: true,
-				tags: true
+				tags: true,
+				author: {
+					select: {
+						id: true,
+						name: true,
+						image: true
+					}
+				}
 			}
 		})
 
-		return { blogs }
+		return { posts }
 	} catch (error) {
-		console.error('Error fetching user blogs:', error)
-		return { blogs: [] }
+		console.error('Error fetching user posts:', error)
+		return { posts: [] }
 	}
 }
 
-export async function getPostById(id: string): Promise<{ blog: Blog | null }> {
+export async function getPostById(id: string): Promise<{ post?: Post | null }> {
+	if (!id) {
+		return {
+			post: null
+		}
+	}
+
 	try {
-		const blog = await prisma.post.findUnique({
+		// Checking in redis cache first:
+		const redis = await getRedisClient();
+		console.log("Checking in redis cache first")
+
+		const postDeatails = await redis.get(id);
+		if (!postDeatails) {
+
+		}
+
+		// Now looking on database as redis cache check is failed.
+		console.log("Now looking on database as redis cache check is failed.")
+		const databasePost = await prisma.post.findUnique({
 			where: { id },
 			include: {
 				author: {
@@ -150,19 +197,24 @@ export async function getPostById(id: string): Promise<{ blog: Blog | null }> {
 			},
 		})
 
-		if (!blog) {
-			return { blog: null }
+		if (!databasePost) {
+			return {
+				post: null
+			}
 		}
 
-		return { blog: blog as Blog }
+		const cacheKey = `post:${databasePost.id}`
+		await redis.set(
+			cacheKey,
+			JSON.stringify(databasePost),
+			{
+				EX: 3600
+			}
+		)
+
+		return { post: databasePost as Post }
 	} catch (error) {
-		console.error('Error fetching blog:', error)
-		return { blog: null }
+		console.error('Error fetching post:', error)
+		return { post: null }
 	}
 }
-
-// Alias functions for backwards compatibility
-export const createBlog = createPost
-export const getUserBlogs = getUserPosts
-export const getBlogById = getPostById
-export const getAllBlogs = getAllPosts

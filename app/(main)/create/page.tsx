@@ -10,22 +10,17 @@ import {
     Card, CardContent, CardHeader, CardTitle, CardDescription
 } from '@/components/ui/card'
 import {
-	Command,
-	CommandEmpty,
-	CommandGroup,
-	CommandInput,
-	CommandItem,
-	CommandList,
+	Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList
 } from "@/components/ui/command"
 import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
+	Popover, PopoverContent, PopoverTrigger
 } from "@/components/ui/popover"
 import { MarkdownEditor } from '@/components/markdown-editor'
 import { toast } from 'sonner'
-import { Loader2, ArrowLeft, Sparkles, X, Plus, Check } from 'lucide-react'
-import { createBlog } from '@/actions/posts.action'
+import { 
+    Loader2, ArrowLeft, Sparkles, X, Plus, Check 
+} from 'lucide-react'
+import { createPost } from '@/actions/posts.action'
 import { POPULAR_TAGS } from '@/types/posts'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -84,7 +79,7 @@ export default function CreatePostPage() {
         setIsSubmitting(true)
 
         try {
-            const result = await createBlog({
+            const result = await createPost({
                 title,
                 description,
                 content,

@@ -1,4 +1,4 @@
-// Blog/Post Types
+// post/Post Types
 export interface Author {
 	id: string
 	name: string
@@ -6,7 +6,7 @@ export interface Author {
 	image?: string | null
 }
 
-export interface Blog {
+export interface Post {
 	id: string
 	title: string
 	description: string
@@ -19,7 +19,7 @@ export interface Blog {
 	authorId: string
 }
 
-export interface BlogListItem {
+export interface PostListItem {
 	id: string
 	title: string
 	description: string
@@ -41,12 +41,12 @@ export interface PaginationData {
 	hasPreviousPage: boolean
 }
 
-export interface BlogsResponse {
-	blogs: BlogListItem[]
+export interface postsResponse {
+	posts: PostListItem[]
 	pagination: PaginationData
 }
 
-export interface UserBlog {
+export interface Userpost {
 	id: string
 	title: string
 	description: string

@@ -3,12 +3,18 @@
 import type React from "react"
 import { useState, useRef, useEffect } from "react"
 import { usePathname, useRouter } from "next/navigation"
-import { LogOut, MessageCircleCode, Home, BookOpen, User, PenSquare } from "lucide-react"
+import { 
+	LogOut, MessageCircleCode, Home, BookOpen, User, PenSquare 
+} from "lucide-react"
 import Link from "next/link"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { 
+	Tooltip, TooltipContent, TooltipProvider, TooltipTrigger 
+} from "@/components/ui/tooltip"
 import { toast } from "sonner"
 import { Button } from "./ui/button"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { 
+	Avatar, AvatarFallback, AvatarImage 
+} from "@/components/ui/avatar"
 import { motion } from "framer-motion"
 import { signOut, useSession } from "next-auth/react"
 import { useTheme } from "next-themes"
@@ -93,8 +99,8 @@ const Sidebar = () => {
 			status: "active"
 		},
 		{
-			path: "blogs",
-			name: "Blogs",
+			path: "posts",
+			name: "Posts",
 			icon: <BookOpen className="h-5 w-5" />,
 			status: "active"
 		},
@@ -206,7 +212,7 @@ const Sidebar = () => {
 											<Button
 												variant="ghost"
 												size="sm"
-												className="w-full justify-center px-0 hover:bg-muted cursor-pointer p-2 pt-4"
+												className="w-full justify-center px-0 cursor-pointer p-2 pt-4"
 											>
 												<Avatar className="h-8 w-8 border-2 border-primary/20">
 													<AvatarImage src={session.user.image || undefined} alt={session.user.name || "User"} />
