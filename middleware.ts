@@ -16,7 +16,7 @@ export default withAuth(
 
 		// Redirect authenticated users away from auth pages
 		if (isAuthPage && isAuth) {
-			return NextResponse.redirect(new URL('/dashboard', req.url))
+			return NextResponse.redirect(new URL('/explore', req.url))
 		}
 
 		// Redirect unauthenticated users trying to access protected routes

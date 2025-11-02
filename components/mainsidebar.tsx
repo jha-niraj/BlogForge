@@ -4,7 +4,7 @@ import type React from "react"
 import { useState, useRef, useEffect } from "react"
 import { usePathname, useRouter } from "next/navigation"
 import { 
-	LogOut, MessageCircleCode, Home, BookOpen, User, PenSquare 
+	LogOut, MessageCircleCode, BookOpen, User, PenSquare, Compass, LayoutDashboard
 } from "lucide-react"
 import Link from "next/link"
 import { 
@@ -93,9 +93,15 @@ const Sidebar = () => {
 
 	const routes: Route[] = [
 		{
+			path: "explore",
+			name: "Explore",
+			icon: <Compass className="h-5 w-5" />,
+			status: "active"
+		},
+		{
 			path: "dashboard",
 			name: "Dashboard",
-			icon: <Home className="h-5 w-5" />,
+			icon: <LayoutDashboard className="h-5 w-5" />,
 			status: "active"
 		},
 		{
